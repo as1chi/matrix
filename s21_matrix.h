@@ -6,7 +6,7 @@
 #include <math.h>
 
 #define OK 0
-#define INNCORRECT_MATRIX 1
+#define INCORRECT_MATRIX 1
 
 #define EPS 1e-7
 
