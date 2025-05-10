@@ -1,19 +1,18 @@
 #include "../s21_matrix.h"
 
 int s21_mult_number(matrix_t *A, double number, matrix_t *result){
-    if (A == NULL || A->matrix == NULL) {
-        return  INCORRECT_MATRIX;
-    }
-
-    if (A->rows < 1 || A->columns < 1) {
+     if (A == NULL ||  result == NULL || 
+        A->matrix == NULL ) {
         return INCORRECT_MATRIX;
     }
 
-    if(result->matrix != NULL){
-        s21_remove_matrix(result);
+    // Проверка на некорректные размеры
+    if (A->rows <= 0 || A->columns <= 0 ) {
+        return INCORRECT_MATRIX;
     }
-    
-    if (s21_create_matrix(A->rows, A->columns, result) != OK){
+
+    // Инициализация результирующей матрицы
+    if (s21_create_matrix(A->rows, A->columns, result) != OK) {
         return INCORRECT_MATRIX;
     }
 
