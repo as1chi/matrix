@@ -1,43 +1,55 @@
 #include "../s21_matrix.h"
 
-int s21_determinant(matrix_t *A, double *result){
-      if (A == NULL || A->matrix == NULL || result == NULL) {
-        return  INCORRECT_MATRIX;
+int s21_determinant(matrix_t *A, double *result) {
+    if (!A || !A->matrix || A->rows <= 0 || A->columns <= 0) {
+        return INCORRECT_MATRIX;
+    }
+    
+    if (A->rows != A->columns) {
+        return CALCULATION_ERROR;  // Для неквадратных матриц
     }
 
-  if(A->rows != A->columns || A->rows < 1){
-    return INCORRECT_MATRIX;
-  }
+    if (!result) {
+        return INCORRECT_MATRIX;
+    }
 
-    if(A->rows == 1){
+    // Базовые случаи
+    if (A->rows == 1) {
         *result = A->matrix[0][0];
         return OK;
     }
 
-    if(A->rows == 2){
-        *result = A->matrix[0][0]*A->matrix[1][1] - A->matrix[0][1]*A->matrix[1][0];
+    if (A->rows == 2) {
+        *result = A->matrix[0][0] * A->matrix[1][1] - A->matrix[0][1] * A->matrix[1][0];
         return OK;
     }
 
     *result = 0.0;
     int status = OK;
     
-    for(int i = 0; i<A->rows && status == OK;i++){
-        matrix_t minor_matrix;
-
-        if(s21_create_matrix(A->rows-1,A->rows-1,&minor_matrix) == OK){
-            for(int j = 1;j<A->rows;j++){
-                for(int k= 0, m = 0;k<A->columns;k++){
-                    if(k == 0) continue;
-                    minor_matrix.matrix[j-1][m] = A->matrix[j][k];
-                }
-            }
-            double det = 0.0;
-            if((status = s21_determinant(&minor_matrix,&det))==OK){
-                *result += pow(-1,i)*A->matrix[0][i]*det;
-            }
-            s21_remove_matrix(&minor_matrix);
+    for (int col = 0; col < A->columns && status == OK; col++) {
+        matrix_t minor;
+        if (s21_create_matrix(A->rows - 1, A->columns - 1, &minor) != OK) {
+            status = INCORRECT_MATRIX;
+            break;
         }
+
+        // Заполнение минора (исключаем 0 строку и col столбец)
+        for (int i = 1, mi = 0; i < A->rows; i++, mi++) {
+            for (int j = 0, mj = 0; j < A->columns; j++) {
+                if (j == col) continue;
+                minor.matrix[mi][mj++] = A->matrix[i][j];
+            }
+        }
+
+        double minor_det = 0.0;
+        status = s21_determinant(&minor, &minor_det);
+        s21_remove_matrix(&minor);
+        
+        if (status != OK) break;
+        
+        *result += (col % 2 ? -1.0 : 1.0) * A->matrix[0][col] * minor_det;
     }
+    
     return status;
-    }
+}

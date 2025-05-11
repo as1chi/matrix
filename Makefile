@@ -9,9 +9,9 @@ SRC = $(wildcard func/*.c)
 HEDER_FILE = $(wildcard s21_matrix.h)
 
 # Test files
-TEST_FILES = $(wildcard tests/test_s21_*.c)
+TEST_FILES = $(wildcard tests/test_*.c)
 TEST_OBJS = $(TEST_FILES:.c=.o)
-TEST_MAIN = tests/test_main.c
+TEST_MAIN = tests/s21_tests.c
 TEST_MAIN_OBJ = $(TEST_MAIN:.c=.o)
 
 # Object files
