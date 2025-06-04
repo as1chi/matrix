@@ -14,7 +14,7 @@ int s21_create_matrix(int rows, int columns, matrix_t *result){
             for(int j = 0; j < i; j++){
                 free(result->matrix[j]);
             }
-            // free(result->matrix);
+            free(result->matrix);
             return INCORRECT_MATRIX;
     }
     
