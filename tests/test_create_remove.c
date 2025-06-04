@@ -167,7 +167,6 @@ Suite *create_remove_suite(void) {
   tcase_add_test(tc_core, s21_create_matrix_07);
   tcase_add_test(tc_core, s21_create_matrix_08);
   tcase_add_test(tc_core, s21_create_matrix_09);
-
   tcase_add_test(tc_core, s21_remove_matrix_01);
   tcase_add_test(tc_core, s21_remove_matrix_02);
   tcase_add_test(tc_core, s21_remove_matrix_03);

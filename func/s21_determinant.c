@@ -1,17 +1,9 @@
 #include "../s21_matrix.h"
 
-int s21_determinant(matrix_t *A, double *result) {
-    if (!A || !A->matrix || A->rows <= 0 || A->columns <= 0) {
-        return INCORRECT_MATRIX;
-    }
-    
-    if (A->rows != A->columns) {
-        return CALCULATION_ERROR;  // Для неквадратных матриц
-    }
-
-    if (!result) {
-        return INCORRECT_MATRIX;
-    }
+int s21_determinant(matrix_t* A, double* result) {
+    int status = s21_check_square_matrix(A);
+    if (status != OK) return status;
+    if (result == NULL) return INCORRECT_MATRIX;
 
     // Базовые случаи
     if (A->rows == 1) {
@@ -25,7 +17,7 @@ int s21_determinant(matrix_t *A, double *result) {
     }
 
     *result = 0.0;
-    int status = OK;
+    status = OK;
     
     for (int col = 0; col < A->columns && status == OK; col++) {
         matrix_t minor;

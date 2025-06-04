@@ -1,15 +1,11 @@
 #include "../s21_matrix.h"
-int s21_calc_complements(matrix_t *A, matrix_t *result) {
-    // Проверка входных данных
-    if (A == NULL || A->matrix == NULL || result == NULL) {
-        return INCORRECT_MATRIX;
-    }
-    if (A->rows != A->columns || A->rows < 1) {
-        return CALCULATION_ERROR;
-    }
 
-    // Создаем результирующую матрицу
-    int status = s21_create_matrix(A->rows, A->columns, result);
+int s21_calc_complements(matrix_t* A, matrix_t* result) {
+    int status = s21_check_square_matrix(A);
+    if (status != OK) return status;
+    if (result == NULL) return INCORRECT_MATRIX;
+
+    status = s21_create_matrix(A->rows, A->columns, result);
     if (status != OK) return status;
 
     // Особый случай для матрицы 1×1
